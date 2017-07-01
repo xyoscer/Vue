@@ -24,7 +24,7 @@
               <input type="text" class="form-control" value="0" v-model="item.productQuantity" style="width:50px;">
               <span @click="changeQuantity(item, 1)">+</span></td>
             <td width="10%"><span>{{item.productPrice*item.productQuantity | formatMoneny}}</span></td>
-            <td><button class="btn">删除</button></td>
+            <td><button class="btn" @click="deleteItem">删除</button></td>
           </tr>
         </tbody>
       </table>
@@ -32,93 +32,101 @@
           <div class="item-total">以选<span class="badge">{{checkNum}}</span>件/全部<span class="badge">{{totalProductNum}}</span>件<span>合计：{{totalMoney | formatMoneny}}</span><a href="#" class="btn">结账</a></div>
        </div>
       </div>
+    <Mydialog show="true" v-if="dialog"></Mydialog>
+
   </div>
 
 </template>
 
 <script>
-
-  export default {
-    data: function () {
-      return {
-        productList: [],
-        checkall: false,
-        totalMoney: 0,
-        checkNum: 0,
-        totalProductNum: 0
-      }
-    },
-    filters: {
-      formatMoneny: function (value) {
-        return '￥' + value.toFixed(2)
-      }
-    },
-    mounted: function () {
-      this.$nextTick(function () {
-        this.cartView()
-      })
-    },
-    methods: {
-      cartView: function () {
-        this.$http.get('../../static/data/data.json').then(res => {
-          this.productList = res.body.result.list
-          this.totalProductNum = this.productList.length
-        })
-      },
-      changeQuantity: function (product, flag) {
-        if (flag > 0) {
-          product.productQuantity++
-        } else {
-          product.productQuantity--
-          if (product.productQuantity < 1) {
-            product.productQuantity = 1
-          }
-        }
-        this.calcTotalMoney()
-      },
-      checkAll: function (checkall) {
-        this.checkNum = 0
-        if (checkall) {
-          this.productList.forEach((item, index) => {
-            if (typeof item.checked === 'undefined') {
-              this.$set(item, 'checked', true)
-              this.checkNum++
-            } else {
-              item.checked = true
-              this.checkNum++
-            }
-          })
-        } else {
-          this.productList.forEach((item, index) => {
-            if (typeof item.checked === 'undefined') {
-              this.$set(item, 'checked', false)
-            } else {
-              item.checked = false
-              this.checkNum = 0
-            }
-          })
-        }
-        this.calcTotalMoney()
-      },
-      chooseOne: function () {
-        this.checkNum = 0
-        this.productList.forEach((item, index) => {
-          if (item.checked) {
-            this.checkNum++
-          }
-        })
-        this.calcTotalMoney()
-      },
-      calcTotalMoney: function () {
-        this.totalMoney = 0
-        this.productList.forEach((item, index) => {
-          if (item.checked) {
-            this.totalMoney += item.productPrice * item.productQuantity
-          }
-        })
-      }
-    }
-}
+ import Mydialog from './components/dialog'
+ export default {
+   data: function () {
+     return {
+       productList: [],
+       checkall: false,
+       totalMoney: 0,
+       checkNum: 0,
+       totalProductNum: 0,
+       dialog: false
+     }
+   },
+   components: {Mydialog},
+   filters: {
+     formatMoneny: function (value) {
+       return '￥' + value.toFixed(2)
+     }
+   },
+   mounted: function () {
+     this.$nextTick(function () {
+       this.cartView()
+     })
+   },
+   methods: {
+     cartView: function () {
+       this.$http.get('../../static/data/data.json').then(res => {
+         this.productList = res.body.result.list
+         this.totalProductNum = this.productList.length
+       })
+     },
+     changeQuantity: function (product, flag) {
+       if (flag > 0) {
+         product.productQuantity++
+       } else {
+         product.productQuantity--
+         if (product.productQuantity < 1) {
+           product.productQuantity = 1
+         }
+       }
+       this.calcTotalMoney()
+     },
+     checkAll: function (checkall) {
+       this.checkNum = 0
+       if (checkall) {
+         this.productList.forEach((item, index) => {
+           if (typeof item.checked === 'undefined') {
+             this.$set(item, 'checked', true)
+             this.checkNum++
+           } else {
+             item.checked = true
+             this.checkNum++
+           }
+         })
+       } else {
+         this.productList.forEach((item, index) => {
+           if (typeof item.checked === 'undefined') {
+             this.$set(item, 'checked', false)
+           } else {
+             item.checked = false
+             this.checkNum = 0
+           }
+         })
+       }
+       this.calcTotalMoney()
+     },
+     chooseOne: function () {
+       this.checkNum = 0
+       this.productList.forEach((item, index) => {
+         if (item.checked) {
+           this.checkNum++
+         }
+       })
+       this.calcTotalMoney()
+     },
+     calcTotalMoney: function () {
+       this.totalMoney = 0
+       this.productList.forEach((item, index) => {
+         if (item.checked) {
+           this.totalMoney += item.productPrice * item.productQuantity
+         }
+       })
+     },
+     deleteItem: function () {
+       this.dialog = true
+       console.log('click delete')
+     }
+   }
+ }
 </script>
 
 <style>

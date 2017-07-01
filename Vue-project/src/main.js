@@ -12,5 +12,5 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app', // vue模型监听的模型范围
   template: '<App/>', // 一个字符串模板作为Vue实例的标识使用,模板将会替换挂载的元素
-  components: { App }
+  components: { App } // 注册组件
 })
