@@ -1,5 +1,5 @@
 <template>
-<div class="modal" v-show="show" transition="fade">
+<div class="modal" transition="fade">
   <div class="modal-dialog">
     <div class="modal-header">
         <div class="header-title">{{title}}</div>
@@ -10,7 +10,7 @@
       </div>
       <div class="modal-footer">
         <a href="#"  class="btn" @click="cancel">{{cancle}}</a>
-        <a href="#"  class="btn" @click="confirm">{{confirm}}</a>
+        <a href="#"  class="btn" @click="confirmHandle">{{confirm}}</a>
       </div>
     </div>
 </div>
@@ -27,14 +27,14 @@ export default {
       confirm: '确定'
     }
   },
-  props: ['show'],
+  //  props: ['show'],
   methods: {
     cancel: function () {
-      this.show = false
+      this.$emit('changeShow') // 向父组件通信，进行取消这个弹窗
+    },
+    confirmHandle: function () {
+      this.$emit('confirmhandle')
     }
-//    confirm: function () {
-//      console.log('删除成功')
-//    }
   }
 }
 </script>
