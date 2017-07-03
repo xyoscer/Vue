@@ -1,0 +1,47 @@
+{
+  "status" : "0",
+  "message": "",
+  "result": [
+    {
+      "addressId": "10001",
+      "userName": "郗银",
+      "streetName": "陕西省，西安市，雁塔区",
+      "postCode": "100074",
+      "tel": "13400000000",
+      "isDefault": "true"
+    },
+    {
+      "addressId": "10002",
+      "userName": "郗银",
+      "streetName": "陕西省，西安市，雁塔区",
+      "postCode": "100074",
+      "tel": "13400000000",
+      "isDefault": "false"
+    },
+    {
+      "addressId": "10003",
+      "userName": "郗银",
+      "streetName": "陕西省，西安市，雁塔区",
+      "postCode": "100074",
+      "tel": "13400000000",
+      "isDefault": "false"
+    },
+    {
+      "addressId": "10004",
+      "userName": "郗银",
+      "streetName": "陕西省，西安市，雁塔区",
+      "postCode": "100074",
+      "tel": "13400000000",
+      "isDefault": "false"
+    },
+    {
+      "addressId": "10005",
+      "userName": "郗银",
+      "streetName": "陕西省，西安市，雁塔区",
+      "postCode": "100074",
+      "tel": "13400000000",
+      "isDefault": "false"
+    }
+  ]
+
+}
