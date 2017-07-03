@@ -27,7 +27,6 @@ export default {
       confirm: '确定'
     }
   },
-  //  props: ['show'],
   methods: {
     cancel: function () {
       this.$emit('changeShow') // 向父组件通信，进行取消这个弹窗

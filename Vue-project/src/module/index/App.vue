@@ -29,17 +29,17 @@
         </tbody>
       </table>
        <div class="cart-footer">
-          <div class="item-total">以选<span class="badge">{{checkNum}}</span>件/全部<span class="badge">{{totalProductNum}}</span>件<span>合计：{{totalMoney | formatMoneny}}</span><a href="#" class="btn">结账</a></div>
+          <div class="item-total">以选<span class="badge">{{checkNum}}</span>件/全部<span class="badge">{{totalProductNum}}</span>件<span>合计：{{totalMoney | formatMoneny}}</span>
+           <a href="about.html" class="btn">结账</a></div>
        </div>
       </div>
-    <Mydialog show="true" v-if="dialog"></Mydialog>
-
+    <Mydialog v-if="dialog" @changeShow="hideDialog" @confirmhandle="confirmDialog"></Mydialog>
   </div>
 
 </template>
 
 <script>
- import Mydialog from './components/dialog'
+ import Mydialog from '../../components/dialog'
  export default {
    data: function () {
      return {
@@ -123,7 +123,13 @@
      },
      deleteItem: function () {
        this.dialog = true
-       console.log('click delete')
+     },
+     hideDialog: function () {
+       this.dialog = false
+     },
+     confirmDialog: function () {
+       this.dialog = false
+       console.log('confirm')
      }
    }
  }
