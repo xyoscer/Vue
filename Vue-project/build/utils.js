@@ -1,4 +1,6 @@
 var path = require('path')
+//  glob模块，用于实现webpack入口目录文件
+var glob = require('glob')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
@@ -68,4 +70,18 @@ exports.styleLoaders = function (options) {
     })
   }
   return output
+}
+// 新增用于多入口
+exports.getEntries = function (globPath) {
+  var entries = {}
+  // 读取src目录进行路径裁剪
+  glob.sync(globPath).forEach(function (entry) {
+    var basename = path.basename(entry,path.extname(entry))
+     var tmp = entry.split('/').splice(-3)
+     var pathname = tmp.splice(0,1) + '/' + basename;
+   //  var moduleName = tmp.slice(1,2)
+    entries[pathname] = entry
+  });
+  console.log(entries)
+  return entries
 }

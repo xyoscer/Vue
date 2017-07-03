@@ -46,23 +46,23 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
+    // generate dist about.html with correct asset hash for caching.
+    // you can customize output by editing /about.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: config.build.index,
+    //   template: 'about.html',
+    //   inject: true,
+    //   minify: {
+    //     removeComments: true,
+    //     collapseWhitespace: true,
+    //     removeAttributeQuotes: true
+    //     // more options:
+    //     // https://github.com/kangax/html-minifier#options-quick-reference
+    //   },
+    //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+    //   chunksSortMode: 'dependency'
+    // }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -116,5 +116,18 @@ if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
-
 module.exports = webpackConfig
+
+var pages = utils.getEntries('./src/module/**/*.html')
+for(var page in pages) {
+  var conf = {
+    filename: page + '.html',
+    template: pages[page],
+    inject: true,
+    excludeChunks: Object.keys(pages).filter(item => {
+      return (item != page)
+    })
+  }
+  module.exports.plugins.push(new HtmlWebpackPlugin(conf))
+}
+
