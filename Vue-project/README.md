@@ -1,87 +1,51 @@
-# vue-project
-
-> 易用，灵活，高效（虚拟dom）操作模型data,而不直接操作DOM
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev  开发环境启动
-
-# build for production with minification
-npm run build 生产环境，打包压缩文件
-
-- 压缩应用代码
-- 使用vue.js指南，删除警告
-
-# build for production and view the bundle analyzer report
-npm run build --report 
-```
-##`vue项目开始
-  - vue-cli构建vue项目
-  
-        npm  install -g vue-cli
-        
-        vue init webpack my-project
-        
-        cd my-project
-        
-        npm install
-        
-        npm run dev
-        
-  - vue自动生成的目录
-  
-  |---Vue-project
-  
-     |---build                    webpack相关的代码
-         |---build.js             生产环境结构代码
-         |---check-version.js     检查node.npm等版本
-         |---dev-client.js        热加载相关代码
-         |---dev-server.js        本地服务器
-         |---util.js              构建工具
-         |---vue-loader.config.js
-         |---webpack.base.conf.js   webpack基本配置
-         |---webpack.dev.conf.js    webpack开发环境配置
-         |---webpack.prod.conf.js   webpack生产环境配置
-     |---config                     项目开发环境配置
-         |---dev.env.js             开发环境变量
-         |---index.js              项目基本配置
-         |---prod.env.js            生产环境变量
-     |---dist                       build生成的生产环境下的项目
-     |---node_modulse               
-     |---src                       项目源代码目录
-         |---components            组件目录
-         |---assets                vue默认的logo文件
-         |---App.vue               默认组件，入口文件
-         |---main.js               程序入口文件，引用，加载各种组件
-     |---static                    静态文件目录，比如css,图片，等
-     |---.babelrc                  ES6语法编译配置
-     |---.editorconfig             项目的编码规范
-     |---.eslintignore
-     |---.eslintrc.js
-     |---.gitignore              git上传中需要忽略的文件
-     |---.postcssrc.js
-     |---index.html                入口文件
-     |---package.json              项目的基本信息
-     |---package-lock.json
-     |---README.md
-     
-        
-
 ## 从.vue到页面
 *.vue -> webpack -> *.html,*.js(new Vue({})),*.css
 ## 数据渲染  
 -  v-text, v-html,{{}}，
+
+      
+        在插值法只能，可以处理一些简单的js表达式，也可以使用过滤器，也可以多过滤器
 -  v-modal
--  v-if,v-show,
+
+     
+       表单的双向绑定使用v-model
+       <textarea></textarea>的插值并不会生效，应该使用v-model来代替
+-  v-if,v-show
+
+       
+       v-show的元素会始终渲染并保持在DOM中，v-if的会被移除DOM
+       v-if有更高的切换消耗，v-show有更高的初始渲染消耗
+       频繁切换使用v-show较好，运行时，条件不太可能改变使用v-if较好
 -  v-for循环渲染列表
+
+       
+       v-for结合计算属性或者methods时可以做数据的过滤和排序
 -  v-on:click事件绑定 <=>@click
+
+
+      click既想传递参数又想传递事件对象，那么需要手动传入$event参数
+      常用事件修饰符：
+      v-on:click.stop 阻止事件冒泡
+      v-on:submit.prevent 提交事件不再重载页面
+      v-on:click.self
+      v-on:click.once
 -  v-bind属性操作，url class操作 对象，数组，<=>：class 
+
+    
+    为标签的属性赋值，要使用v-bind指令，v-bind绑定的属性必须是data属性里面定义的值
+    ，如果想写固定的值加单引号。v-bind指令中不能使用过滤器，要实现过滤器的效果，在v-bind
+    中使用计算属性
 -  过滤器，computed属性
+     
+     
+     计算属性出现是为了解决插值法中过多的逻辑操作，也是使用{{计算属性名}}
+    
+      计算属性与方法的区别：计算属性的依赖没有发生变化，当再次调用计算属性的时候，
+      能够立即返回上次缓存的计算值，而不需要从新执行计算属性的方法，但是方法需要重新执行方法体
+      
+ - slot 
+ 
+        使得子组件里面的数据可以通过作用域插槽用在父组件页面中的指定区域内
 
 
 ## vue实例 new Vue
@@ -89,6 +53,9 @@ npm run build --report
 - data 代表vue对象的数据
 - methods 代表vue对象的方法
 - watch 设置对象监听的方法
+- 每个实例都实现了事件接口，
+  （1）$on(eventName) 监听事件
+  （2）$emit(eventName) 触发事件
 
 Vue对象里的设置通过html指令进行关联
   
@@ -116,9 +83,34 @@ new Vue({
   - 在vue中，在一个组件中import引入另一个组件，这个组件就是父组件，被引入的组件就是
      子组件。
   - 父子组件之间的通信，在子组件中增加一个props，他是一个数组，专门用来接收父组件传递
-    过来的数据，数组中定义的变量和父组件中定义的元素属性对应
+    过来的数据，数组中定义的变量和父组件中定义的元素属性对应，v-model
   - 子组件向父组件传递数据需要自定义事件，在父组件上监听这个事件，就可以知道子组件向他传递的数据了
-  - 兄弟组件，就需要状态管理，vuex
+     子组件使用$emit(eventName)来触发事件，父组件在使用子组件的地方使用v-on来监听子组件触发的事件 
+  - 兄弟组件，就需要状态管理，vuex 
+   pros, bus ,slot 
+   
+  ### prop
+    是单向绑定的，从父组件传递给子组件，子组件内部不能改变prop,
+   ## 递归组件
+   
+   - name属性
+   - 
+   ## $nextTick
+     
+       等组件渲染完，才执行的操作，写在nextTick中
+  - 全局注册
+  
+       Vue.component('my-component',{
+           template: '<div></div>'
+       })
+       
+  - 局部注册
+  
+       var child = {
+         template: ''
+       }
+       在 使用时components : {child}引入组件
+       
   ## vue-Resource与后台数据交互 axios
   
     就像jQuery里的$.ajax，用来和后台交互数据。
@@ -139,6 +131,26 @@ new Vue({
        PostCSS  vue-loader处理css输出，都是通过PostCSS进行作用域重写
    - script中export default = {} 的对象就是new Vue()构造函数中接受的参数，在.vue组件中
      data要是一个函数，返回一个对象，供组件使用
+     
+ ## 购物车组件
+ 
+    主组件
+      引入组件: (1) 使用import 组件名 from './'
+              (2) 在主组件内注册子组件 compoents:{引入进来的组件名}
+             （3) 在模板中使用组件
+    弹窗组件
+    分页组件
+    点击小图放大图组件
+    
+ ## vue的实例详解和生命周期
+ ## vue路由
+ ##
+ ## 改造webpack实现vue的多页面效果
+ 
+   多页面，就是webpack有多个入口文件
+ - util.js进行改造
+ 
+          添加一个getEntries，
   
   ## 问题
   

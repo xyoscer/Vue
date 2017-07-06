@@ -29,22 +29,27 @@
           </ul>
         </div>
         <div class="shipping-addr-more">
-          <a href="#" @click="limitNum = addressList.length">显示全部地址</a>
+          <a href="#" @click="limitNum = addressList.length" v-show="limitNum == 3">
+            <p>显示全部地址列表</p>
+          </a>
+          <a href="#" @click="limitNum = 3" v-show="limitNum == addressList.length">
+            <p>收回地址列表</p>
+          </a>
         </div>
       </div>
       <h3 class="list-title">配送方式</h3>
       <div class="shipping-method">
         <ul>
-          <li class="active">菜鸟驿站</li>
-          <li>京东快递</li>
+          <li v-bind:class="{'active':shipMethod == 1}" @click="shipMethod=1">菜鸟驿站</li>
+          <li v-bind:class="{'active':shipMethod == 2}" @click="shipMethod=2">京东快递</li>
         </ul>
       </div>
 
       <h3 class="list-title">支付方式</h3>
       <div class="shipping-method">
         <ul>
-          <li>货到付款</li>
-          <li class="active">在线支付</li>
+          <li v-bind:class="{'active':payMethod == 2}" @click="payMethod=2">货到付款</li>
+          <li v-bind:class="{'active':payMethod == 1}" @click="payMethod=1">在线支付</li>
         </ul>
       </div>
     </div>
@@ -58,8 +63,8 @@
         limitNum: 3,
         addressList: [],
         currentIndex: 0,
-        shippingMethod: 1,
-        active: 'true'
+        shipMethod: 1,
+        payMethod: 1
       }
     },
     mounted: function () {
@@ -237,11 +242,16 @@
   }
   .shipping-method {
     margin-top: 10px;
+    margin-left: 100px;
   }
   .shipping-method li{
     display: inline-block;
-    border: 1px solid #999;
-    padding:5px 10px;
+    border: 1px solid #e9e9e9;
+    padding:10px 15px;
     margin-left: 20px;
+  }
+  .shipping-method li.active {
+    border: 2px solid #ee7a23;
+    cursor: pointer;
   }
 </style>
