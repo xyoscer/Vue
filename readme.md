@@ -130,4 +130,43 @@ npm run build --report
   
        使用Object.defineProperty()来监听属性的变动，
   - 第二，对象是一个深层次的结构，使用递归
+  
+## webpack整理
+
+> webpack 打包模块化的js工具，通过loader转转文件，通过plugin扩展功能。
+- webpack的几大模块
+
+     -  entry   
+   
+     -  chunk
+   
+     -  loader: 处理单一文件的输入与输出,进行各类资源转换，将其转换为js模块，style-loader/css-loader/less-loader
+   
+     -  plungin：插件的实体
+   
+- webpack构建流程
+
+    - 解析webpack配置参数，合并从shell传入和webpack.config.js文件里配置的参数，生成最后的配置结果，
+  options作为最后返回结果， 
+    - 注册所有配置的插件，让插件监听webpack构建生命周期的事件节点，以做出对应的处理，
+  Compiler(),Run(),run一旦运行，就开始进行编译和构建、
+  
+     **几个重要的webpck事件节点**
+       
+          （1）compiler 开始编译
+          （2）make从入口点分析模块及其依赖的模块，创建这些模块对象
+          （3）build-module 构建模块
+          （4）after-compiler 完成构建
+          （5）seal 封装构建结果
+          （6）emit  把各个chunk输出到结果文件
+          （7）after-emit 完成输出
+          
+    - 从配置的entry入口文件开始解析文件，构建AST语法树，找出每个节点所依赖的文件，递归下去
+   
+    - 在解析文件递归过程中根据文件类型和loader配置找出合适的loader用来对文件进行转换
+   
+    - 递归完后得到每个文件的最终结果，根据entry配置生成代码块chunk
+   
+    - 输出所有chunk到文件系统
+  
 
