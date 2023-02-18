@@ -156,3 +156,6 @@ new Vue({
   
   （1）使用vue监听不存在的变量，vm.set
    (2) 使用$http.get('../')获得本地数据，数据应该放在static目录下
+
+
+   ## 测试 demo
